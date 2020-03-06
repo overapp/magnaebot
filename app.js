@@ -1,4 +1,4 @@
-// Copyright 2017 Google LLC
+// Copyright 2020 OverApp
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,24 +14,41 @@
 
 'use strict';
 
-// [START gae_node_request_example]
-const express = require('express');
+const express = require('express')
 
-const app = express();
+const app = express()
+
+// Middleware
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
+// Routes
 
 app.get('/', (req, res) => {
   res
     .status(200)
-    .send('Hello, world!')
-    .end();
-});
+    .send('Welcome to MagnaeBot!')
+    .end()
+})
+
+app.post('/command', (req, res) => {
+
+  let payload = req.body
+  let command = payload.command
+
+  res
+    .status(200)
+    .send(`You sent me this command: '${command ? command : `<none>`}'`)
+    .end()
+
+})
 
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
-});
-// [END gae_node_request_example]
+  console.log(`App listening on port ${PORT}`)
+  console.log('Press Ctrl+C to quit.')
+})
 
-module.exports = app;
+module.exports = app
